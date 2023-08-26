@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify you are a human!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div style=" height: 100vh; display:grid; place-items: center">
+        <div class="main">
+            <div class="topline">
+               
+                <div class="spinner">
+
+                </div>
+                <div class="checkbox"></div>
+
+                <div class="notrobottext">
+                    Я не робот
+                </div>
+                <img src="RecaptchaLogo.svg.png" width="50px"  height="50px" style=" margin-left: auto; margin-right: 10px; margin-top: 10px;">
+
+            </div>
+            <br>
+            <div class="riddle" >
+               <div class="progressbar">
+                    <div class="progress">
+
+                    </div>
+                    <div class="progress">
+                        
+                    </div>
+                    <div class="progress">
+                        
+                    </div>
+                    <div class="progress">
+                        
+                    </div>
+               </div>
+
+                <p class="riddletext" style="font-family: Roboto, helvetica, arial, sans-serif; font-size: 15px; justify-self: center; margin-left: 15px;">
+                    Преведите данное число в двоичную систему исчесления: 132
+               </p>
+               <input class="ans">
+               <div class="ansbtn">
+                    <p class="checktxt" >
+                        Проверить
+                    </p>
+               </div>
+               <div class="timerwrapper">
+                <p class="timer" id="minutes">
+                    0
+                  </p>
+                  <p class="timer">
+                   :
+                 </p>
+                 <p  class="timer" id="seconds">
+                    00
+                 </p>
+               </div>
+
+            </div>
+        </div>
+        
+
+    </div>
+    <script>
+        let toggle =  document.querySelector(".checkbox")
+        let spinner = document.querySelector('.spinner')
+        let main = document.querySelector('.main')
+        let riddle = document.querySelector('.riddle')
+        let robottext = document.querySelector('.notrobottext')
+        let minutes = document.querySelector("#minutes")
+        let seconds = document.querySelector("#seconds")
+        let checkbtn = document.querySelector(".ansbtn")
+        let riddletxtobj = document.querySelector('.riddletext')
+        let ans = document.querySelector(".ans")
+        let secondsNum = 0
+        let currlevel = 0
+        let riddleans = ['10000100', '120', '111', '20']
+        let riddletxt = [
+            'Преведите данное число в двоичную систему исчесления: 132',
+            'В некоторой стране автомобильный номер длиной 7 символов составляется из заглавных букв (всего используется 26 букв) и десятичных цифр в любом порядке. Каждый символ кодируется одинаковым и минимально возможным количеством бит, а каждый номер – одинаковым и минимально возможным целым количеством байт. Определите объем памяти в байтах, необходимый для хранения 20 автомобильных номеров.',
+            'По каналу связи передаются сообщения, содержащие только четыре буквы: А, Б, В, Г; для передачи используется двоичный код, удовлетворяющий условию Фано. Для букв А, Б, В используются такие кодовые слова: А – 0, Б – 110, В – 101. Укажите кратчайшее кодовое слово для буквы Г, при котором код будет допускать однозначное декодирование. Если таких кодов несколько, укажите код с наибольшим числовым значением.',
+            'Производится двухканальная (стерео) звукозапись с частотой дискретизации 80 кГц. Запись длится 3 минуты 25 секунд, её результаты записываются в файл без сжатия данных, причём каждый сигнал кодируется минимально возможным и одинаковым количеством бит. Информационный объём полученного файла без учета заголовка не превышает 80 Мбайт. Определите максимальную битовую глубину кодирования звука, которая могла быть использована в этой записи.'
+            ]
+        toggle.addEventListener('click', function(){
+            toggle.style.display = 'none'
+            spinner.style.display = 'block'
+            setTimeout(function(){
+                main.style.animation = 'changehieght 1s'
+                main.style.height = '500px'
+
+
+                spinner.style.opacity = '0' 
+                robottext.style.marginLeft = '45px'
+                riddle.style.opacity = '1'
+                let interval = setInterval(function(){
+                 
+         
+                    console.log(secondsNum)
+                    secondsNum+=1;
+                    if(secondsNum < 10)
+                    {
+                        seconds.innerHTML = '0' + secondsNum
+
+                    }
+                    else
+                    {
+                        seconds.innerHTML = secondsNum
+
+                    }
+                    if(secondsNum == 60)
+                    {
+                        seconds.innerHTML = '00'
+                        secondsNum = 0
+                        minutes.innerHTML = parseInt(minutes.innerHTML) +  1
+                    }
+
+                }, 1000)
+            }, 1000)
+        })
+
+        
+        checkbtn.addEventListener('click', function(){
+            checkbtn.style.animation = ''
+            if(ans.value == riddleans[currlevel])
+            {
+               
+                ans.value = ''
+                let bars = document.querySelectorAll('.progress')
+                bars[currlevel].style.backgroundColor = '#34C759'
+                currlevel+=1
+                if(currlevel != 4)
+                {
+                    riddletxtobj.innerHTML = riddletxt[currlevel]
+
+                }
+                else
+                {
+                    riddle.style.opacity = '0'
+                    main.style.animation = ''
+                    main.style.animation = 'shrink 2s'
+                    main.style.height = '74px'
+                    robottext.style.marginLeft = '0px'
+                    main.style.border = '1px solid #34C759'
+                    setTimeout(()=>{
+                        window.location.replace('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+                    },2000)
+                    
+                }   
+            }
+            else
+            {
+                let bars = document.querySelectorAll('.progress')
+                bars[currlevel].style.backgroundColor = '#ff3b30'
+                checkbtn.style.animation = 'shake 0.3s ease-in-out'
+                setTimeout(()=>{
+                    checkbtn.style.animation = ''
+
+                }, 300)
+            }
+        })
+    </script>
+</body>
+</html>
